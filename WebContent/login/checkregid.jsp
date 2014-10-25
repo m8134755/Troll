@@ -5,8 +5,9 @@
 <%@ page import="java.sql.*" %>
 
 <%
-	request.setCharacterEncoding("UTF-8");
-	response.setCharacterEncoding("UTF-8");
+	request.setCharacterEncoding("UTF-8"); //글자를 인코딩해서 JSP로 전달
+											// request : 페이지가 바뀌어도 전달되는 정보 객체
+	response.setCharacterEncoding("UTF-8"); // 다른 곳으로 정보를 요청.
 	response.setContentType("application/json");
 	
 	String regId = request.getParameter("regid").toString();
