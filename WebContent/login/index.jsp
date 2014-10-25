@@ -2,16 +2,16 @@
 <%
 	if(session.getAttribute("name") != null){ %>
 	<script>location.replace("/main");</script>
+	<!-- 로그인 중일시 메인으로 자동 이동 -->
 <%
 	}
 
-	response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
+	response.setHeader("Cache-Control","no-cache"); //HTTP 1.1, 캐쉬를 사용하지 않고 서버에서만 보여줌.
 	response.setHeader("Pragma","no-cache"); //HTTP 1.0
 	response.setDateHeader ("Expires", 0);
-	
-	String agent = request.getHeader("User-Agent");
-	System.out.println(agent + " from " + request.getRemoteAddr());
-	if(agent.indexOf("Trident") != -1) response.sendRedirect("/error/notsupport/");
+	//Expires 응답 헤더는 HTTP 1.0 응답 헤더로서, 응답 결과의 만료일을 지정할 수 있다. 0으로 지정함으로써,
+	//현재 시간 이전으로 만료일을 지정함으로써, 응답 결과가 캐시되지 않도록 한다.
+
 %>
 
 <!DOCTYPE html>
@@ -20,13 +20,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
     <title>Troll</title>
 
     <link href="/css/bootstrap.css" rel="stylesheet">
-
     <link href="/css/signin.css" rel="stylesheet" />
     <link href="/css/style_global.css" rel="stylesheet" />
 	<link href="/css/animate.css" rel="stylesheet" />
@@ -51,8 +48,8 @@
     </div>
 
     <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+    ==================================================
+    Placed at the end of the document so the pages load faster -->
     
     <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
