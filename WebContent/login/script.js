@@ -1,14 +1,3 @@
- 
-if(window.android != undefined) window.android.getRegID();
-
-function getRegID(regID){
-	$.post('checkregid.jsp', {regid: regID}, function(data){
-		if(data.status == 1) {
-			location.href = "/main";
-		}
-	});
-}
-
 $('#login').click(function(event){
 	event.preventDefault();
 	
