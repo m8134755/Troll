@@ -24,7 +24,7 @@ $('#login').click(function(event){
 	}, 'json');
 	
 });
-
+/*
 $('button#findid').click(function(event){
 	event.preventDefault();
 	
@@ -63,7 +63,7 @@ $('button#findpw').click(function(event){
 		else setError('검색에 실패하였습니다.<br/>계정 정보가 없거나 푸시가 등록되어 있지 않습니다.');
 	});
 });
-
+*/
 $('#join').click(function(){
 	location.href = "/join";
 });

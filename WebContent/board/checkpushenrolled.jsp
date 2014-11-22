@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="util.ConnUtil"%>
-<%@ page import="org.json.simple.*" %>
-<%@ page import="java.sql.*" %>
+<%@page import="util.ConnUtil"%>
+<%@page import="org.json.simple.JSONObject"%>
+<%@page import="java.sql.*"%>
 
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -15,26 +15,37 @@
 	
 	JSONObject json = new JSONObject();
 	
-	String name = session.getAttribute("name").toString();
+	String userid = session.getAttribute("userid").toString();
 	
 	try{
 		conn = ConnUtil.getConnection();
+		int result1 = 0, result2 = 0;
 		
-		String sql = "select phone_num from user where name = ?;";
+		String sql = "select gcmc_key from register_gcmc where user_id = ?";
 		ps = conn.prepareStatement(sql);
-		ps.setString(1, name);
+		ps.setString(1, userid);
 		
 		rs = ps.executeQuery();
 		
 		if(rs.next()){
-			String phonenum = rs.getString(1);
-			json.put("status", 1);
-			json.put("phonenum", phonenum);
-		}
-		else{
-			json.put("status", 0);
+			result1 = 1;
 		}
 		
+		ps.close();
+		rs.close();
+		
+		sql = "select regID from user_device where user_id = ?;";
+		ps = conn.prepareStatement(sql);
+		ps.setString(1, userid);
+		
+		rs = ps.executeQuery();
+		
+		if(rs.next()){
+			result2 = 1;
+		}
+		
+		if(result1 == 1 || result2 == 1) json.put("status", 1);
+		else json.put("status", 0);
 	}catch(Exception e){
 		e.printStackTrace();
 		json.put("status", 0);

@@ -1,4 +1,7 @@
-<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ 
+	page contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"
+%>
 
 <%
 	if(request.getSession(false) == null || session.getAttribute("name") == null){
@@ -36,15 +39,14 @@
                 		<% out.write(session.getAttribute("name").toString()); %>
                 		<b class="caret"></b></a>
                 		<ul class="dropdown-menu">
-                			<li><a href="/info/userinfo">내 정보</a>
+                			<li><a href=#>내 정보</a>
                 			<li><a href="javascript:location.replace('/logout.jsp');">로그아웃</a>
                 		</ul>
                 	</li>
                     <li class="dropdown" id="nav-appinfo">
                     	<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="info">정보 <b class="caret"></b></a>
                     	<ul class="dropdown-menu">
-                    		<li><a href="/info/appinfo">시스템 정보</a>
-                    		<li><a href="/manual">사용 매뉴얼</a>
+                    		<li><a href=#>내역</a>
                     	</ul>
                     </li>
                 </ul> 

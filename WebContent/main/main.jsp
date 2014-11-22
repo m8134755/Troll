@@ -1,14 +1,13 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
-
 <div class="title">
     <div class="container">
-       작업을 수행할 보드(Board)를 선택해주세요.
+    	한글 테스트
     </div>
 </div>
 
 
 <article class="container">
 
-   미구현
+	미구현
 
-</article> <!-- /container -->
+</article>

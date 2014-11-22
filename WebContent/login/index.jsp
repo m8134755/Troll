@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
-<%
-	if(session.getAttribute("name") != null){ %>
+
+<%  if(session.getAttribute("name") != null){ %>
 	<script>location.replace("/main");</script>
 	<!-- 로그인 중일시 메인으로 자동 이동 -->
 <%
@@ -11,6 +11,8 @@
 	response.setDateHeader ("Expires", 0);
 	//Expires 응답 헤더는 HTTP 1.0 응답 헤더로서, 응답 결과의 만료일을 지정할 수 있다. 0으로 지정함으로써,
 	//현재 시간 이전으로 만료일을 지정함으로써, 응답 결과가 캐시되지 않도록 한다.
+	
+	String agent = request.getHeader("User-Agent");
 
 %>
 
@@ -20,6 +22,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="shortcut icon" href="/images/favicon.png">
 
     <title>Troll</title>
 

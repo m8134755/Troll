@@ -15,7 +15,7 @@
 		<!-- 최신모드로 지정된 DOCTYPE에 상관없이 IE8 이상 버전에서 항상 최신 표준 모드로 렌더링 -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 		<!-- viewport를 통한 화면 넓이 자동 조절 -->
-		<link rel="shortcut icon" href="favi1con.png">
+		<link rel="shortcut icon" href="favicon.png">
 		<title>Troll</title>
 	</head>
 </html>
