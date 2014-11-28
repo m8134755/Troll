@@ -124,7 +124,7 @@ $('#button_requestjoin').click(function(event){
 		email : $('#inputemail').val()
 	};
 	
-	$.post('requestjoin.jsp', requestdata, function(data){
+	$.post('createboard.jsp', requestdata, function(data){
 		if(data.status){
 			localStorage.joinsuccess = 1;
 			location.replace('/login');

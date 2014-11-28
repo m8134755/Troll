@@ -2,8 +2,12 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="util.ConnUtil"%>
-<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.*" %>
+<%@page import="org.json.simple.*" %>
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+
+
+
 
 <html lang="en">
 <head>
@@ -24,10 +28,10 @@
     <%@ include file="/header.jsp" %>
     <%@ include file="main.jsp" %>
     <%@ include file="/footer.jsp" %>
-
     <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/script_global.js"></script>
     <script src="script.js"></script>
+    
 </body>
 </html>
