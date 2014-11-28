@@ -21,15 +21,18 @@
 	try{
 		conn = ConnUtil.getConnection();
 		
-		String sql = "insert into board (board_master, board_title) values (?, ?);";
-			
+		String sql = "insert into board (board_master, guest, board_title) values (?, ?, ?);";
+		System.out.println("쿼리 날렸어요");
 		ps = conn.prepareStatement(sql);
 			
 		ps.setString(1, request.getParameter("boardmaster"));
-		ps.setString(2, request.getParameter("boardtitle"));
+		ps.setString(2, "m8134755");
+		ps.setString(3, request.getParameter("boardtitle"));
 			
 		result = ps.executeUpdate();
-			
+		
+		System.out.println("쿼리 날렸어요");
+		
 		if(result > 0){
 			json.put("status", 1);
 		}
