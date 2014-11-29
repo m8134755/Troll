@@ -39,7 +39,7 @@
                 		<% out.write(session.getAttribute("name").toString()); %>
                 		<b class="caret"></b></a>
                 		<ul class="dropdown-menu">
-                			<li><a href=#>내 정보</a>
+                			<li><a href="/userinfo">내 정보</a>
                 			<li><a href="javascript:location.replace('/logout.jsp');">로그아웃</a>
                 		</ul>
                 	</li>

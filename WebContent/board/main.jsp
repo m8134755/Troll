@@ -1,15 +1,18 @@
-<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%
+	
 %>
-
 <div class="title">
     <div class="container">
-    	작업을 수행할 보드(Board)를 선택하세요.
+    	<%= session.getAttribute("boardtitle") %>
     </div>
 </div>
 
 
 <article class="container">
-
-    미구현
-
+	<div class="row">
+		<div class="col-md-3" id="userlist">
+			
+		</div>
+	</div>
 </article>

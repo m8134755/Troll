@@ -9,35 +9,36 @@
 	response.setCharacterEncoding("UTF-8");
 	response.setContentType("application/json");
 	String userid = session.getAttribute("userid").toString();
+	int result = 0;
 	
 	
 	Connection conn = null;
 	PreparedStatement ps = null;
+	Statement stmt=null;
 	ResultSet rs = null;
+	String cardid = request.getParameter("cardid");
 	
-	JSONObject json;
-	JSONArray ja = new JSONArray();
+	JSONObject json = new JSONObject();
 	
 	try{
 		conn = ConnUtil.getConnection();
-		String sql = "select * from board where board_master=?";
+		
+		String sql = "delete from card where card_id= ?";
+		
 		ps = conn.prepareStatement(sql);
-		ps.setString(1, userid);
+			
+		ps.setString(1, request.getParameter("cardid"));
+			
+		result = ps.executeUpdate();
 		
-		rs = ps.executeQuery();
-		
-		
-		
-		while(rs.next()){
-			json = new JSONObject();
-			json.put("boardtitle", rs.getString("board_title"));
-			json.put("boardid", rs.getString("board_id"));
-			ja.add(json);
+		if(result > 0){
+			json.put("cardid", cardid);
 		}
+		
 	}catch(Exception e){
 		e.printStackTrace();
 	}finally{
 		ConnUtil.close(rs, ps, conn);
 	}
-	out.write(ja.toString());
+	out.write(json.toString());
 %>

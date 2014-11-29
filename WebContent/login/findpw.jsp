@@ -14,6 +14,9 @@
 <%@ page import="java.util.Properties" %>
 <%@ page import="javax.mail.PasswordAuthentication" %>
 <%@ page import="mail.SMTPAuthenticator"%>
+<%@page import="java.util.Random"%>
+<%@page import="org.apache.http.impl.client.cache.memcached.SHA256KeyHashingScheme"%>
+
 <%
    response.setHeader ( "Cache-Control", "no-cache,no-store,must-revalidate" ) ;
    response.setHeader ( "Pragma", "no-cache" ) ;
@@ -21,12 +24,13 @@
    request.setCharacterEncoding("UTF-8");
    response.setCharacterEncoding("UTF-8");
    response.setContentType("application/json");
+   String id = request.getParameter("userid").toString();
    String username = request.getParameter("username").toString();
    String email = request.getParameter("useremail").toString();
    
    String sender = "kdh7785@naver.com";
    String receiver = email;
-   String subject = "트롤 Troll 아이디찾기";
+   String subject = "트롤 Troll 비밀번호찾기";
    String content = "트롤 Troll에서 보낸 메일 입니다.\n";
    
    
@@ -35,6 +39,10 @@
    ResultSet rs = null;
    
    JSONObject json = new JSONObject();
+   
+   char[][] letter = {{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'},
+			{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'},
+			{'0','1','2','3','4','5','6','7','8','9','0','1','2','3','4','5','6','7','8','9','0','1','2','3','4','5'}};
    
    Properties props = new Properties ( ) ;
    props.put ("mail.smtp.user","kdh7785@naver.com");
@@ -49,19 +57,41 @@
    
    try{
       conn = ConnUtil.getConnection();
-      String sql = "select * from user where name = ? and email = ? ;";
+      String sql = "select * from user where user_id = ? and name = ? and email = ? ;";
       ps = conn.prepareStatement(sql);
-      ps.setString(1, username);
-      ps.setString(2, email);
+      ps.setString(1, id);
+      ps.setString(2, username);
+      ps.setString(3, email);
       
       rs = ps.executeQuery();
       if(rs.next()){
          
-         content += username;
-         content += "님의 아이디는 ";
-         content += rs.getString("user_id");
-         content += " 입니다.\n";
-
+			String[] namelist = {username};
+			Random random = new Random();
+			
+			String newpassword = "";
+			
+			for(int i=0; i<8; i++){
+				int lettercase = random.nextInt(3);
+				int letternum = random.nextInt(26);
+				newpassword += letter[lettercase][letternum];
+			}
+			
+			String hashpw = new SHA256KeyHashingScheme().hash(newpassword);
+			
+			sql = "update user set password = ? where user_id = ?;";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, hashpw);
+			ps.setString(2, id);
+			
+			ps.executeUpdate();
+			conn.setAutoCommit(false);
+			conn.commit();
+			
+            content += "\n" + username;
+            content += "님의 임시비밀번호는 ";
+            content += newpassword;
+            content += " 입니다.\n";
          try {
             
             Authenticator auth = new SMTPAuthenticator();
@@ -82,6 +112,8 @@
             msg.setContent(content, "text/html;charset=UTF-8");
             
             Transport.send(msg);
+            
+
             
          } catch ( Exception e ) {
             e.printStackTrace();

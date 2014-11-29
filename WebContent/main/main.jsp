@@ -10,10 +10,7 @@
 
 
 <article class="container">
-	<div class="container">
-		<div class="col-md-8 col-md-offset-2">
-			<ul class="list-inline" id = "userboard">
-			</ul>
-		</div>
+	<div class="row">
+		<div class="col-md-3" id = "userboard">
 	</div>
 </article>

@@ -8,7 +8,7 @@
 	request.setCharacterEncoding("UTF-8");
 	response.setCharacterEncoding("UTF-8");
 	response.setContentType("application/json");
-	String userid = session.getAttribute("userid").toString();
+	String listid = request.getParameter("listid");
 	
 	
 	Connection conn = null;
@@ -20,18 +20,16 @@
 	
 	try{
 		conn = ConnUtil.getConnection();
-		String sql = "select * from board where board_master=?";
+		String sql = "select * from card where card_master=?";
 		ps = conn.prepareStatement(sql);
-		ps.setString(1, userid);
+		ps.setString(1, listid);
 		
 		rs = ps.executeQuery();
 		
-		
-		
 		while(rs.next()){
 			json = new JSONObject();
-			json.put("boardtitle", rs.getString("board_title"));
-			json.put("boardid", rs.getString("board_id"));
+			json.put("cardcontent", rs.getString("card_content"));
+			json.put("cardid", rs.getString("card_id"));
 			ja.add(json);
 		}
 	}catch(Exception e){
