@@ -8,11 +8,14 @@
     </div>
 </div>
 
+<div class="col-md-2 col-xs-3">
+	<ul class="list-unstyled"  id = "history">
+	</ul>
+</div>
 
 <article class="container">
 	<div class="row">
-		<div class="col-md-3" id="userlist">
-			
+		<div class="col-md-12" id="userlist">
 		</div>
 	</div>
 </article>

@@ -224,8 +224,7 @@ div.footer{
 	background: #f8f8f8 !important;
 }
 
-.blocks{
-	background-color: skyblue;
-	display:inline-block;
-	margin: 5px 10px;
+#history{
+	background-color: #E7E7E7;
+	margin-left:auto;
 }

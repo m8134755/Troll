@@ -8,8 +8,10 @@
 	request.setCharacterEncoding("UTF-8");
 	response.setCharacterEncoding("UTF-8");
 	response.setContentType("application/json");
+	String boardid = session.getAttribute("boardid").toString();
 	String listid = request.getParameter("listid").toString();
 	String cardcontent = request.getParameter("cardcontent").toString();
+	String history = session.getAttribute("name").toString() + "님께서 카드(" + cardcontent + ")를 추가하셨습니다.";
 	int result = 0;
 	
 	Connection conn = null;
@@ -40,4 +42,21 @@
 		ConnUtil.close(rs, ps, conn);
 	}
 	out.write(json.toString());
+	
+	try{
+		conn = ConnUtil.getConnection();
+		
+		String sql = "insert into history (history_master, history_content) values (?, ?)";
+		ps = conn.prepareStatement(sql);
+			
+		ps.setString(1, boardid);
+		ps.setString(2, history);
+			
+		result = ps.executeUpdate();
+		
+	}catch(Exception e){
+		e.printStackTrace();
+	}finally{
+		ConnUtil.close(rs, ps, conn);
+	}
 %>

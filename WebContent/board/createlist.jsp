@@ -9,6 +9,8 @@
 	response.setCharacterEncoding("UTF-8");
 	response.setContentType("application/json");
 	String boardid = session.getAttribute("boardid").toString();
+	String listtitle = request.getParameter("listtitle");
+	String history = session.getAttribute("name").toString() + "님께서 리스트(" + listtitle + ")를 추가하셨습니다.";
 	int result = 0;
 	
 	
@@ -26,7 +28,7 @@
 		ps = conn.prepareStatement(sql);
 			
 		ps.setString(1, boardid);
-		ps.setString(2, request.getParameter("listtitle"));
+		ps.setString(2, listtitle);
 			
 		result = ps.executeUpdate();
 		
@@ -40,4 +42,21 @@
 		ConnUtil.close(rs, ps, conn);
 	}
 	out.write(json.toString());
+	
+	try{
+		conn = ConnUtil.getConnection();
+		
+		String sql = "insert into history (history_master, history_content) values (?, ?)";
+		ps = conn.prepareStatement(sql);
+			
+		ps.setString(1, boardid);
+		ps.setString(2, history);
+			
+		result = ps.executeUpdate();
+		
+	}catch(Exception e){
+		e.printStackTrace();
+	}finally{
+		ConnUtil.close(rs, ps, conn);
+	}
 %>

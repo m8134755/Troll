@@ -11,6 +11,7 @@
 
 <article class="container">
 	<div class="row">
-		<div class="col-md-3" id = "userboard">
+		<div class="col-md-12" id = "userboard">
+		</div>
 	</div>
 </article>

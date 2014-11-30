@@ -34,6 +34,7 @@
 			json.put("boardid", rs.getString("board_id"));
 			ja.add(json);
 		}
+		
 	}catch(Exception e){
 		e.printStackTrace();
 	}finally{

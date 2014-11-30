@@ -10,6 +10,7 @@
 	response.setContentType("application/json");
 	String boardid = session.getAttribute("boardid").toString();
 	
+	
 	Connection conn = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
@@ -19,7 +20,7 @@
 	
 	try{
 		conn = ConnUtil.getConnection();
-		String sql = "select * from card where card_master in (select list_id from list where list_master=?)";
+		String sql = "select * from history where history_master=? order by created_at desc limit 10";
 		ps = conn.prepareStatement(sql);
 		ps.setString(1, boardid);
 		
@@ -27,16 +28,14 @@
 		
 		while(rs.next()){
 			json = new JSONObject();
-			json.put("cardmaster", rs.getString("card_master"));
-			json.put("cardcontent", rs.getString("card_content"));
-			json.put("cardid", rs.getString("card_id"));
+			json.put("historycontent", rs.getString("history_content"));
 			ja.add(json);
 		}
-		
 	}catch(Exception e){
 		e.printStackTrace();
 	}finally{
 		ConnUtil.close(rs, ps, conn);
 	}
 	out.write(ja.toString());
+	
 %>

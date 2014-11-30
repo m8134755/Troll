@@ -9,7 +9,8 @@
 	response.setCharacterEncoding("UTF-8");
 	response.setContentType("application/json");
 	String boardid = request.getParameter("boardid");
-	
+	String userid = session.getAttribute("userid").toString();
+	int num = Integer.parseInt(boardid);
 	
 	Connection conn = null;
 	PreparedStatement ps = null;
@@ -19,15 +20,17 @@
 	
 	try{
 		conn = ConnUtil.getConnection();
-		String sql = "select * from board where board_id=?";
+		String sql = "select * from board where board_master=?";
 		ps = conn.prepareStatement(sql);
-		ps.setString(1, boardid);
+		ps.setString(1, userid);
 		
 		rs = ps.executeQuery();
 		
 		while(rs.next()){
-			session.setAttribute("boardtitle", rs.getString("board_title"));
-			session.setAttribute("boardid", boardid);
+			if(rs.getRow() == num+1){
+				session.setAttribute("boardtitle", rs.getString("board_title"));
+				session.setAttribute("boardid", rs.getString("board_id"));
+			}
 		}
 		
 	}catch(Exception e){

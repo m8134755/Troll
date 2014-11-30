@@ -26,10 +26,7 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown" id="nav-book">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">메뉴 <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">메뉴1</a></li>
-                            <li><a href="#">메뉴2</a></li>
-                            <li><a href="#">메뉴3</a></li>  
+                        <ul class="dropdown-menu" id="boardlist">
                         </ul>
                     </li>
                 </ul>
@@ -54,4 +51,3 @@
         </div>
     </header>
     
-    <div class="wrapper">
