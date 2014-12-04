@@ -6,7 +6,6 @@
 <%@page import="java.util.*" %>
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 
-
 <%
 	request.setCharacterEncoding("UTF-8");
 	response.setCharacterEncoding("UTF-8");
