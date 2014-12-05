@@ -11,11 +11,11 @@
       <div class="modal-dialog">
          <div class="modal-content">
             <div class="modal-header">
-               <h4 class="modal-title">멤버추가/삭제</h4>
-               <h4>추가할 멤버의 아이디를 입력하세요.</h4>
+               <h4 class="modal-title">메뉴</h4>
             </div>
             <div class="modal-body">
                <h3>멤버 추가</h3>
+               <h4>추가하고 싶은 멤버의 아이디를 입력하세요.</h4>
                <form class="form-horizontal">
                   <div class="form-group">
                      <label for="member_id" class="col-xs-2 control-label">아이디</label>
@@ -40,8 +40,8 @@
          </div>
       </div>
    </div>
-   <div class="text-center">
-           <a data-toggle="modal" data-target=".modal">멤버추가/삭제</a> 
+   <div class="text-right">
+           <a data-toggle="modal" data-target=".modal"><button class="btn btn-primary">메뉴</button></a> 
      </div>
 <div class="col-md-2 col-xs-3">
 	<ul class="list-unstyled"  id = "history">

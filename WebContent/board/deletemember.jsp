@@ -60,41 +60,53 @@
 	}finally{
 		ConnUtil.close(rs, ps, conn);
 	}
-	
-	if(guest != null && guest.length > 1)
+	if(guest.length != 2)
 	{
-		for(int i=0 ;i < guest.length ; i++)
+		if(guest != null && guest.length > 1)
 		{
-			if(guest[i].equals(memberid))
+			for(int i=0 ;i < guest.length ; i++)
 			{
-				guest[i] = null;
-				index++;
-			}
-		}
-		if(index > 1)
-		{
-			String[] deletelist = new String[index+1];
-			for(int i=0 ; i<guest.length ; i++)
-			{
-				for(int j=0 ; j<=index ; j++)
+				if(guest[i].equals(memberid))
 				{
-					if(guest[i].equals(null) == false)
-					{
-						deletelist[j] = guest[i];
-					}
+					guest[i] = null;
+					index++;
 				}
 			}
-			guestlist = StringUtils.join(deletelist,",");
+			if(index >= 1)
+			{
+				String[] deletelist = new String[index+1];
+				for(int i=0 ; i<guest.length ; i++)
+				{
+					for(int j=0 ; j<=index ; j++)
+					{
+						if(guest[i].equals(null) == false)
+						{
+							deletelist[j] = guest[i];
+						}
+					}
+				}
+				guestlist = StringUtils.join(deletelist,",");
+			}
+			else
+			{
+				guestlist = null;
+			}
 		}
 		else
 		{
-			guestlist=null;
+			guestlist = null;
 		}
-		
 	}
 	else
 	{
-		guestlist = null;
+		if(guest[0].equals(memberid))
+		{
+			guestlist = guest[1];
+		}
+		else if(guest[1].equals(memberid))
+		{
+			guestlist = guest[0];
+		}
 	}
 	try{
 		conn = ConnUtil.getConnection();
