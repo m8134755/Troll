@@ -1,6 +1,10 @@
 var listnum=0;
 var first = [];
 var after = [];
+var firstcard = [];
+var aftercard = [];
+var startarea;
+var arrivalarea;
 
 
 $(function(){
@@ -34,7 +38,6 @@ function showlist(){
 				start: function (event, ui) {
 					for(i=0; i<$('.usercard').length; i++){
 				    	first[i] = $('.listid').eq(i).val();
-				    	//console.log(first[i]);
 			    	}
 			    },
 			    receive : function (event, ui)
@@ -45,7 +48,6 @@ function showlist(){
 			    	var start=0;
 			    	for(i=0; i<$('.usercard').length; i++){
 			    		after[i] = $('.listid').eq(i).val();
-			    		//console.log(after[i]);
 			    	}
 			    	for(i=0; i<$('.usercard').length; i++){
 				    	if(first[i] != after[i]){
@@ -55,7 +57,7 @@ function showlist(){
 			    	}
 			    	if(check != 0){
 				    	$.post('changelist.jsp', {first:first[start-check], last:first[start-2], after:after[start-2], check:check}, function(){
-							location.replace('/board');0.
+							location.replace('/board');
 					    });
 			    	}
 			    }
@@ -132,15 +134,41 @@ function showcard(){
 		    $( ".cardarea" ).sortable({
 		    	connectWith:".cardarea",
 	    		start: function (event, ui){
-	    			//start2 = $('.cardarea').index(this);
-	    			//end2 = $('.cardarea').index(this);
+	    			startarea = $('.cardarea').index(this);
+	    			arrivalarea = $('.cardarea').index(this);
+	    			for(i=0; i<$('.cardobj').length; i++){
+				    	firstcard[i] = $('.cardid').eq(i).val();
+			    	}
 	            },
 	            receive : function (event, ui)
 	            {
-	            	//end2 = $('.cardarea').index(this);
+	            	arrivalarea = $('.cardarea').index(this);
 	            },
 	            stop: function (event, ui) {
-	               //alert(end2);
+	            	var check=0;
+			    	var start=0;
+			    	for(i=0; i<$('.cardobj').length; i++){
+			    		aftercard[i] = $('.cardid').eq(i).val();
+			    	}
+			    	for(i=0; i<$('.cardobj').length; i++){
+				    	if(firstcard[i] != aftercard[i]){
+			            	console.log(firstcard[i], aftercard[i]);
+				    		start=i+1;
+				    		check++;
+				    	}
+			    	}
+			    	if(check != 0){
+				    	$.post('changecard.jsp', {first:firstcard[start-check],
+				    		after:aftercard[start-check+1], check:check, startarea:startarea, arrivalarea:arrivalarea,
+				    		beforelist:$('.listid').eq(startarea).val(), afterlist:$('.listid').eq(arrivalarea).val()}, function(){
+					    });
+			    	}
+			    	//if(check == 0 && startarea!=arrivalarea){
+			    	//	$.post('changecard.jsp', {first:0, last:0,
+				    //		after:0, check:0, startarea:startarea, arrivalarea:arrivalarea,
+				    //		beforelist:$('.listid').eq(startarea).val(), afterlist:$('.listid').eq(arrivalarea).val()}, function(){
+					 //   });
+			    	//}
 	            }
 		    });
 		    $( ".cardarea" ).disableSelection();

@@ -14,7 +14,6 @@
 	int first = Integer.parseInt(request.getParameter("first"));
 	int after = Integer.parseInt(request.getParameter("after"));
 	int last = Integer.parseInt(request.getParameter("last"));
-	//System.out.println(first + " " + last + " " + after + " " + check);
 	
 	int result;
 	
@@ -29,7 +28,7 @@
 		for(int i=0; i<check; i++){
 			try{
 				conn = ConnUtil.getConnection();
-				String sql = "select * from list where list_master=? and list_id >= ? limit ?";
+				String sql = "select * from card where card_master in (select list_id from list where list_master=?) and card_id >= ? limit ?";
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, boardid);
 				ps.setInt(2, first);
@@ -166,7 +165,6 @@
 			}
 		}
 	}
-	
 	//out.write(ja.toString());
 		
 %>
