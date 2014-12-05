@@ -17,10 +17,9 @@
 	String currentusername=null;
 	String membername = null;
 	String history;
-	String[] guestlist=null;
-	String guest;
-	String[] deleteguest=null;
-	String delete=null;
+	String[] guest=null;
+	int index = 0;
+	String guestlist=null;
 	String master=null;
 	
 	int result = 0;
@@ -35,46 +34,79 @@
 	
 	try{
 		conn = ConnUtil.getConnection();
-		String sql = "select * from board where board_id=?";
+		
+		String sql = "select * from board where board_id = ?;";
+		
 		ps = conn.prepareStatement(sql);
-		ps.setInt(1, boardid);
+		
+		ps.setInt(1,boardid);
+			
+		rs = ps.executeQuery();
+		
+		if(rs.next()){
+			if(rs.getString("guest") != null)
+			{
+				guestlist = rs.getString("guest");
+				
+				if(guestlist.contains(","))
+				{
+					guest = StringUtils.split(rs.getString("guest"),',');
+				}
+			}
+		}
+		
+	}catch(Exception e){
+		e.printStackTrace();
+	}finally{
+		ConnUtil.close(rs, ps, conn);
+	}
+	
+	if(guest != null && guest.length > 1)
+	{
+		for(int i=0 ;i < guest.length ; i++)
+		{
+			if(guest[i].equals(memberid))
+			{
+				guest[i] = null;
+				index++;
+			}
+		}
+		if(index > 1)
+		{
+			String[] deletelist = new String[index+1];
+			for(int i=0 ; i<guest.length ; i++)
+			{
+				for(int j=0 ; j<=index ; j++)
+				{
+					if(guest[i].equals(null) == false)
+					{
+						deletelist[j] = guest[i];
+					}
+				}
+			}
+			guestlist = StringUtils.join(deletelist,",");
+		}
+		else
+		{
+			guestlist=null;
+		}
+		
+	}
+	else
+	{
+		guestlist = null;
+	}
+	try{
+		conn = ConnUtil.getConnection();
+		String sql = "select * from user where user_id=?";
+		ps = conn.prepareStatement(sql);
+		ps.setString(1, memberid);
 		
 		rs = ps.executeQuery();
 		
 		if(rs.next())
 		{
-			master = rs.getString("board_master");
-			if(rs.getString("guest") != null)
-			{
-				guestlist = StringUtils.split(rs.getString("guest"),",");
-				int j=guestlist.length;
-				for(int i=0 ; i< guestlist.length ; i++)
-				{
-					if(guestlist[i].equals(memberid))
-					{
-						guestlist[i] = null;
-						j--;
-					}
-				}
-				deleteguest = new String[j];
-				int index=0;
-				for(int i=0 ; i<guestlist.length ; i++)
-				{
-					if(guestlist[i] != null)
-					{
-						deleteguest[index] = guestlist[i];
-						index++;
-					}
-				}
-				if(j >= 1)
-				{
-					delete = StringUtils.join(deleteguest,",");
-				}
-				else
-				{
-					delete = null;
-				}
-			}
+			membername = rs.getString("name");
 		}
 	}catch(Exception e){
 		e.printStackTrace();
@@ -100,15 +132,15 @@
 	}
 	try{
 		conn = ConnUtil.getConnection();
-		String sql = "select * from user where user_id=?";
+		String sql = "select * from board where board_id=?";
 		ps = conn.prepareStatement(sql);
-		ps.setString(1, memberid);
+		ps.setInt(1, boardid);
 		
 		rs = ps.executeQuery();
 		
 		if(rs.next())
 		{
-			membername = rs.getString("name");
+			master = rs.getString("board_master");
 		}
 	}catch(Exception e){
 		e.printStackTrace();
@@ -120,14 +152,16 @@
 		{
 			conn = ConnUtil.getConnection();
 			
-			String sql = "update board set guest=? where board_id=?;";
+			String sql = "update board set guest = ? where board_id = ?;";
 			
 			ps = conn.prepareStatement(sql);
-				
-			ps.setString(1, delete);
+			
+			
+			ps.setString(1,guestlist);
 			ps.setInt(2, boardid);
 				
 			result = ps.executeUpdate();
+			
 			if(result == 1)
 			{
 				history = currentusername + "님께서 "+ membername +"(" +memberid +")"+"님을 멤버에서 삭제하셨습니다.";
@@ -149,9 +183,10 @@
 	}finally{
 		ConnUtil.close(rs, ps, conn);
 	}
+	
+	
+	
 	out.write(json.toString());
-	
-	
 	
 	try{
 		conn = ConnUtil.getConnection();

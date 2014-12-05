@@ -60,7 +60,9 @@ $(function() {
 	$.post('checkinvitedboard.jsp', function(data){
 		for(i=0; data[i]!=null; i++){
 			$('#invitedboard').append('<div class="col-md-3"><button type="button" class="close leaveboard"><span aria-hidden="true">&times;</span></button>'+
-					'<button class="btn btn-lg btn-primary btn-block enterinvitedboard">'+data[i].boardtitle+'</button>'+data[i].boardmaster+'</div>');
+					'<button class="btn btn-lg btn-primary btn-block enterinvitedboard">'+data[i].boardtitle+'</button>'+data[i].boardmaster+'</div>' +
+					'<form><input class = "invitedboardid" type="text" value="' + data[i].boardid + '" hidden>' + 
+					'</form></div>');
 			$('#boardlist').append('<li><a class="enterboardmenu" href=#>' + data[i].boardtitle + '</a></li>');
 		}
 		$('.enterinvitedboard').click(function (event) {
@@ -69,6 +71,17 @@ $(function() {
 			$.post('enterinvitedboard.jsp', {boardid:test}, function(){
 		    	location.replace('/board/');
 		    });	    
+		});
+		$('.leaveboard').click(function(event){
+			var test = $(this).index('.leaveboard');
+			event.preventDefault();
+			if (confirm("보드에서 나가시겠습니까?")) {
+				$.post('leaveboard.jsp', {boardid:$('.invitedboardid').eq(test).val()}, function(){
+			    	location.replace('/main');
+			    });
+			}else{
+				return false;
+			}
 		});
 	});
 });

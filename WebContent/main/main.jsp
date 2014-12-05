@@ -18,8 +18,6 @@
 		</div>
 		<div class="row" id = "invitedboard">
 			<h4>내가 초대되어있는 보드</h4>
-			<div class = "col-md-3">
-			</div>
 		</div>
 </article>
 
