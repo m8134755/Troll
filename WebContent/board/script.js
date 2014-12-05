@@ -1,4 +1,7 @@
 var listnum=0;
+var first = [];
+var after = [];
+
 
 $(function(){
 	showlist();
@@ -29,15 +32,32 @@ function showlist(){
 		$(function() {
 			$( "#userlist" ).sortable({
 				start: function (event, ui) {
-					start = $('.usercard').index(this);
-					end = $('.usercard').index(this);
+					for(i=0; i<$('.usercard').length; i++){
+				    	first[i] = $('.listid').eq(i).val();
+				    	//console.log(first[i]);
+			    	}
 			    },
 			    receive : function (event, ui)
 			    {
-			    	end = $('.usercard').index(this);
 			    },
 			    stop: function (event, ui) {
-			       //alert(end);
+			    	var check=0;
+			    	var start=0;
+			    	for(i=0; i<$('.usercard').length; i++){
+			    		after[i] = $('.listid').eq(i).val();
+			    		//console.log(after[i]);
+			    	}
+			    	for(i=0; i<$('.usercard').length; i++){
+				    	if(first[i] != after[i]){
+				    		start=i+1;
+				    		check++;
+				    	}
+			    	}
+			    	if(check != 0){
+				    	$.post('changelist.jsp', {first:first[start-check], last:first[start-2], after:after[start-2], check:check}, function(){
+							location.replace('/board');0.
+					    });
+			    	}
 			    }
 			});
 			$( "#userlist" ).disableSelection();
