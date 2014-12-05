@@ -22,7 +22,7 @@
 		conn = ConnUtil.getConnection();
 		String sql = "select * from board where guest like ?;";
 		ps = conn.prepareStatement(sql);
-		ps.setString(1, userid);
+		ps.setString(1, "%"+userid+"%");
 		
 		rs = ps.executeQuery();
 		
