@@ -1,7 +1,5 @@
 $(function() {
-	setProgress("정보를 받아오고 있습니다");
 	$.post('checkboard.jsp', function(data){
-		dismissProgress();
 		for(i=0; data[i]!=null; i++){
 			$('#userboard').append('<div class="col-md-3"><button type="button" class="close deleteboard"><span aria-hidden="true">&times;</span></button>'+
 					'<button class="btn btn-lg btn-primary btn-block enterboard" style="line-height: 5;">'+data[i].boardtitle+'</button>'+
@@ -18,7 +16,7 @@ $(function() {
 		$('#createboard').click(function (event) {
 			event.preventDefault();
 			var board_title = $('#boardtitle').val();
-			if(board_title == ""){
+			if(board_title == "" || board_title.trim() == 0){
 				setError("타이틀을 입력해주세요");
 			} else {
 			    $.post('createboard.jsp', {boardtitle:board_title}, function(data){
@@ -57,9 +55,7 @@ $(function() {
 		});
 	});
 	
-	setProgress("정보를 받아오고 있습니다");
 	$.post('checkinvitedboard.jsp', function(data){
-		dismissProgress();
 		for(j=0; data[j]!=null; j++){
 			$('#invitedboard').append('<div class="col-md-3"><button type="button" class="close leaveboard"><span aria-hidden="true">&times;</span></button>'+
 					'<button class="btn btn-lg btn-primary btn-block enterinvitedboard" style="line-height:5">'+data[j].boardtitle+'</button>'+data[j].boardmaster+'</div>' +

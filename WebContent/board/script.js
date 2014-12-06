@@ -6,7 +6,6 @@ var aftercard = [];
 var startarea;
 var arrivalarea;
 
-
 $(function(){
 	showlist();
 	showcard();
@@ -15,10 +14,10 @@ $(function(){
 	currentmember();
 });
 
+
+
 function showlist(){
-	setProgress("정보를 받아오고 있습니다");
 	$.post('checklist.jsp', function(data){
-		dismissProgress();
 		for(i=0; data[i]!=null; i++){
 			$('#userlist').append('<div class="col-md-2 col-xs-12 usercard">' +
 					'<div class="panel panel-default"><div class="panel-heading">'+
@@ -74,11 +73,15 @@ function showlist(){
 		
         
 		$('.editlistbtn').click(function (event) {
-			var test = $(this).index('.editlistbtn');
 			event.preventDefault();
-			$.post('updatelist.jsp', {liststatus:test, listtitle:$('.editlisttitle').eq(test).val()}, function(){
-		    	location.replace('/board');
-		    });	    
+			var test = $(this).index('.editlistbtn');
+			if($('.editlisttitle').eq(test).val() == "" || $('.editlisttitle').eq(test).val().trim() == 0){
+				setError("타이틀을 입력해주세요");
+			}else{
+				$.post('updatelist.jsp', {liststatus:test, listtitle:$('.editlisttitle').eq(test).val()}, function(){
+			    	location.replace('/board');
+			    });	
+			}   
 		});
 		
 		$('.deletelist').click(function (event) {
@@ -102,7 +105,7 @@ function showcard(){
 			for(j=0; data[j]!=null; j++){
 				if(data[j].cardmaster==$('.listid').eq(k).val()){
 					$('.cardarea').eq(k).append('<li class="list-group-item card_obj"><input class="cardid" type="text" value="' +
-					data[j].cardid + '" hidden><button class="btn btn-md btn-default editlist" data-toggle="modal" '+
+					data[j].cardid + '" hidden><button class="btn btn-md btn-default btn-block editlist" data-toggle="modal" '+
 					' data-target=".editcarddiv' + data[j].cardid + '">' + data[j].cardcontent +'</button>' +
 					
 					'<div class="modal fade editcarddiv' + data[j].cardid + '"><div class="modal-dialog"><div class="modal-content">'+
@@ -170,18 +173,28 @@ function showcard(){
 		$('.createcard').click(function (event) {
 			var test = $('.createcard').index(this);
 			event.preventDefault();
-		    $.post('createcard.jsp', {liststatus:test, cardcontent:$('.cardcontent').eq(test).val()}, function(data){
-		    	 location.replace('/board');
-		    });	    
+			if($('.cardcontent').eq(test).val() == "" || $('.cardcontent').eq(test).val().trim() == 0){
+				setError("내용을 입력해주세요");
+			}else{
+				$.post('createcard.jsp', {liststatus:test, cardcontent:$('.cardcontent').eq(test).val()}, function(data){
+			    	 location.replace('/board');
+			    });
+			} 
+		   	    
 		});
 		
 		$('.editcardbtn').click(function (event) {
 			var test = $(this).index('.editcardbtn');
 			event.preventDefault();
-			$.post('updatecard.jsp', {cardid:$('.cardid').eq(test).val(), cardcontent:$('.editcardcontent').eq(test).val()},
-				function(){
-		    		location.replace('/board');
-		    });	    
+			if($('.editcardcontent').eq(test).val() == "" || $('.editcardcontent').eq(test).val().trim() == 0){
+				setError("내용을 입력해주세요");
+			}else{
+				$.post('updatecard.jsp', {cardid:$('.cardid').eq(test).val(), cardcontent:$('.editcardcontent').eq(test).val()},
+						function(){
+					location.replace('/board');
+					});	
+			} 
+			    
 		});
 		
 		$('.deletecard').click(function (event) {
@@ -243,9 +256,14 @@ function boardnavi(){
 function createlist(){
 	$('#createlist').click(function (event) {
 		event.preventDefault();
-	    $.post('createlist.jsp', {listtitle:$('#listtitle').val()}, function(data){
-	    	 location.replace('/board');
-	    });	    
+		if($('#listtitle').val() == "" || $('#listtitle').val().trim() == 0){
+			setError("타이틀을 입력해주세요");
+		}else{
+			 $.post('createlist.jsp', {listtitle:$('#listtitle').val()}, function(data){
+		    	 location.replace('/board');
+		    });
+		} 
+	   	    
 	});
 }
 
