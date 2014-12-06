@@ -227,11 +227,6 @@ div.footer{
 	background: #f8f8f8 !important;
 }
 
-#history{
-	background-color: #E7E7E7;
-	margin-left:auto;
-}
-
 .makeboard {
 	padding : 0 0 auto;
 	background-color: #f0f8ff;
@@ -250,12 +245,6 @@ div.footer{
 	margin: 5px 95px 24px 0
 }
 
-.editlist {
-	font-size : 17px;
-	color : violet;
-	font-weight : bold;
-	}
-
 #createnewlist {
 	font-size : 17px;
 	color : violet;
@@ -270,14 +259,6 @@ div.footer{
 	height : 300px;
 	margin: 0px 25px 25px 0 ;
 	border : 1;
-}
-
-.usercard {
-	background-color: #f0f8ff;
-	margin-left: auto;
-	height : 300px;
-	margin: 0px 25px 25px 0 ;
-	width : 220px;
 }
 
 .createnewcard {

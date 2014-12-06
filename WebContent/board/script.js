@@ -10,25 +10,33 @@ var arrivalarea;
 $(function(){
 	showlist();
 	showcard();
-	listmaking();
-	listmakingcheck();
+	//listmaking();
+	//listmakingcheck();
 	createlist();
 	boardnavi();
 	currentmember();
 });
 
 function showlist(){
+	setProgress("정보를 받아오고 있습니다");
 	$.post('checklist.jsp', function(data){
+		dismissProgress();
 		for(i=0; data[i]!=null; i++){
-			$('#userlist').append('<div class="col-md-2 col-xs-12 usercard">' + 
-			'<div><a class="editlist" href=#>' + data[i].listtitle + '</a>' +
-			'<form method="post"><input class = "listid" type="text" value="' + data[i].listid + '" hidden>' + 
-				
-			'<div class="editlistdiv hidden"><input class="editlisttitle" type="text" value="' + data[i].listtitle + '">' +
-			'<button type="submit" class="btn btn-default editlistbtn">리스트수정</button>' + 
-			'<button type="submit" class="btn btn-default deletelist">리스트삭제</button></form></div></div>' + 
-			
-			'<div class="cardarea"><br></div></div>');
+			$('#userlist').append('<div class="col-md-2 col-xs-12 usercard">' +
+					'<div class="panel panel-default"><div class="panel-heading">'+
+					'<h3 class="panel-title">'+data[i].listtitle+'<input class = "listid" type="text" value="' + data[i].listid + '" hidden>'+	
+					'<button class="btn btn-xs btn-default pull-right editlist" data-toggle="modal" '+
+					' data-target=".editlistdiv' + data[i].listid + '">수정</button></div></h3>'+
+					'<ul class="list-group" style="padding-left: 0px;"><li class="list-group-item cardarea"></li></ul>' +
+
+					
+					'<div class="modal fade editlistdiv' + data[i].listid + '"><div class="modal-dialog"><div class="modal-content">'+
+					'<div class="modal-header"><h4 class="modal-title">List 수정 및 삭제</h4></div><div class="modal-body">' +
+					'<div class="form-group"><label class="control-label">List Title</label>'+
+					'<input class="form-control editlisttitle" type="text" value="' + data[i].listtitle + '">' +
+					'</div></div><div class="modal-footer"><button class="btn btn-primary editlistbtn" type="button">수정</button>'+
+					'<button class="btn btn-primary deletelist" type="button">삭제</button>' +
+					'<button type="button" class="btn btn-default" data-dismiss="modal">취소</button></div></div></div></div>');
 			
 			listnum++;
 		}
@@ -84,32 +92,9 @@ function showlist(){
 			}else{
 				return false;
 			} 	    
-		});
-		
-		$(".editlist").click(function(event){
-		    var test = $('.editlist').index(this);
-		    event.preventDefault();
-		    $.ajax({
-			    type: "POST", 
-			    data: { 
-			    	status: "editlist"+test
-			    } ,
-			    url: "checkedit.jsp",
-			    cache: false,
-			    success: function(data){
-			    	if(data==0){
-			    		$('.editlistdiv').eq(test).removeClass('hidden');
-			    	}else{
-			    		$('.editlistdiv').eq(test).addClass('hidden');
-			    	}	        
-			    }
-		    });
-		});
-		
-		
+		});			
 	});	
 }
-
 
 
 function showcard(){
@@ -117,17 +102,29 @@ function showcard(){
 		for(k=0; k<listnum; k++){
 			for(j=0; data[j]!=null; j++){
 				if(data[j].cardmaster==$('.listid').eq(k).val()){
-					$('.cardarea').eq(k).append('<div class="cardobj"><input class="cardid" type="text" value="' +
-					data[j].cardid + '" hidden><a class="editcard" href=#>' + data[j].cardcontent +
-					'</a>' + '<div class="editcarddiv hidden">' +
-					'<form><input class="editcardcontent" type="text" value="' + data[j].cardcontent + '">' + 
-					'<button type="submit" class="btn btn-default editcardbtn">카드수정</button>' + 
-					'<button type="submit" class="btn btn-default deletecard">카드삭제</button><div><form></div>');	
+					$('.cardarea').eq(k).append('<li class="list-group-item card_obj"><input class="cardid" type="text" value="' +
+					data[j].cardid + '" hidden><button class="btn btn-md btn-default editlist" data-toggle="modal" '+
+					' data-target=".editcarddiv' + data[j].cardid + '">' + data[j].cardcontent +'</button></li>' +
+					
+					'<div class="modal fade editcarddiv' + data[j].cardid + '"><div class="modal-dialog"><div class="modal-content">'+
+					'<div class="modal-header"><h4 class="modal-title">카드 수정 및 삭제</h4></div><div class="modal-body">' +
+					'<div class="form-group"><label class="control-label">Card Content</label>'+
+					'<input class="form-control editcardcontent" type="text" value="' + data[j].cardcontent + '">' +
+					'</div></div><div class="modal-footer"><button class="btn btn-primary editcardbtn" type="button">수정</button>'+
+					'<button class="btn btn-primary deletecard" type="button">삭제</button>' +
+					'<button type="button" class="btn btn-default" data-dismiss="modal">취소</button></div></div></div></div>');
+					
 				}
 			}
-			$('.usercard').eq(k).append('<div><a class="createnewcard" href=#>새 카드 생성하기</a>' + 
-			'<div class="createcarddiv hidden"><form method="post"><input class="cardcontent" type="text" placeholder="내용을 입력하세요.">' +
-			'<button type="submit" class="btn btn-default createcard">카드생성</button></form></div>');
+			$('.cardarea').eq(k).append('<li class="list-group-item"><button class="btn btn-md btn-default createnewcard" data-toggle="modal" '+
+				' data-target=".createcarddiv' + $('.listid').eq(k).val() + '">새 카드 생성하기</button>' +
+			
+			'<div class="modal fade createcarddiv' + $('.listid').eq(k).val() + '"><div class="modal-dialog"><div class="modal-content">'+
+			'<div class="modal-header"><h4 class="modal-title">카드 생성</h4></div><div class="modal-body">' +
+			'<div class="form-group"><label class="control-label">Card Content</label>'+
+			'<input class="form-control cardcontent" type="text" placeholder="카드 내용을 입력하세요.">' +
+			'</div></div><div class="modal-footer"><button class="btn btn-primary createcard" type="button">생성</button>'+
+			'<button type="button" class="btn btn-default" data-dismiss="modal">취소</button></div></div></div></li>');
 		}
 		
 		$(function() {
@@ -185,26 +182,6 @@ function showcard(){
 		    });	    
 		});
 		
-		$(".createnewcard").click(function(event){
-		    var test = $('.createnewcard').index(this);
-		    event.preventDefault();
-		    $.ajax({
-			    type: "POST", 
-			    data: { 
-			    	status: "createcard"+test
-			    } ,
-			    url: "checkedit.jsp",
-			    cache: false,
-			    success: function(data){
-			    	if(data==0){
-			    		$('.createcarddiv').eq(test).removeClass('hidden');
-			    	}else{
-			    		$('.createcarddiv').eq(test).addClass('hidden');
-			    	}	        
-			    }
-		    });
-		});	
-		
 		$('.editcardbtn').click(function (event) {
 			var test = $(this).index('.editcardbtn');
 			event.preventDefault();
@@ -225,26 +202,6 @@ function showcard(){
 				return false;
 			}
 		});
-		
-		$(".editcard").click(function(event){
-		    var test = $('.editcard').index(this);
-		    event.preventDefault();
-		    $.ajax({
-			    type: "POST", 
-			    data: { 
-			    	status: "editcard"+test
-			    } ,
-			    url: "checkedit.jsp",
-			    cache: false,
-			    success: function(data){
-			    	if(data==0){
-			    		$('.editcarddiv').eq(test).removeClass('hidden');
-			    	}else{
-			    		$('.editcarddiv').eq(test).addClass('hidden');
-			    	}	        
-			    }
-		    });
-		});	
 	})
 }
 
@@ -263,36 +220,11 @@ function boardnavi(){
 	});
 	$.post('checkhistory.jsp', function(data){
 		for(i=0; data[i]!=null; i++){
-			$('#history').append('<li>' + data[i].historycontent + '</li>');
+			$('#history').append('<div class="alert alert-info alert-dismissible" role="alert"><button class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>'
+					+'<small>'+data[i].historycontent+'</small></div>');
 		}
 	});
-}
-
-function listmaking(){
-$('#makinglist').append('<div class="col-md-2 col-xs-12 makelist"><a id="createnewlist" href=#>새 리스트 생성하기</a>' +
-		'<div id = "createnewlistdiv" class="hidden"><form method="post">' +
-		'<input id="listtitle" type="text" name="listname" placeholder="리스트명을 입력하세요">' +
-		'<button type="submit" class="btn btn-default" id="createlist">생성하기</button></form></div></div>');
-}
-function listmakingcheck(){
-	$("#createnewlist").click(function(event){
-	    event.preventDefault();
-	    $.ajax({
-		    type: "POST", 
-		    data: { 
-		    	status: "createlist"
-		    } ,
-		    url: "checkedit.jsp",
-		    cache: false,
-		    success: function(data){
-		    	if(data==0){
-		    		$('#createnewlistdiv').removeClass('hidden');
-		    	}else{
-		    		$('#createnewlistdiv').addClass('hidden');
-		    	}	        
-		    }
-	    });
-	});	
+	
 }
 
 function createlist(){
@@ -409,11 +341,11 @@ function currentmember(){
 	$.post('currentmember.jsp',function(data){
 		for(i=0 ; data[i] != null ; i++)
 		{
-			$('.form-group.member').append('<label class=rmmember>'+ data[i].member +'<input class="btn btn-danger removemember" type="button" value="' + data[i].memberid + '"></label>');
+			$('.member_area').append('<label class=rmmember>'+ data[i].member +'<input class="btn btn-danger removemember" type="button" value="' + data[i].memberid + '"></label>');
 		}
 		if(data[0] == null)
 		{
-			$('.form-group.member').append('<div class=nomember>현재 초대되어 있는 멤버가 없습니다</div>');
+			$('.member_area').append('<div class=nomember>현재 초대되어 있는 멤버가 없습니다</div>');
 		}
 		$('.removemember').click(function(event){
 			event.preventDefault();

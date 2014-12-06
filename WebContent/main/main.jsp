@@ -4,18 +4,24 @@
 %>
 <div class="title">
     <div class="container">
-    	사용할 보드(Board)를 선택해주세요.
+    	<h2>사용할 보드(Board)를 선택해주세요.</h2>
     </div>
 </div>
 
 
 <article class="container">
-		<div class="row" id = "userboard">
-			<h4>내가 생성한 보드</h4>
-			<div class="col-md-3">
-				<button id="createnewboard" class="btn btn-lg btn-default btn-block" style="margin-top:20px;" data-toggle="modal" data-target="#board_create_modal">Board 생성</button>
-			</div>
+		<div class="row">
+				<h4>내가 생성한 보드</h4>
+				<div id = "userboard">
+					
+				</div>
+
+				<div class="col-md-3">
+						<button id="createnewboard" class="btn btn-lg btn-default btn-block" style="margin-top:20px; line-height:5;" data-toggle="modal" data-target="#board_create_modal">Board 생성</button>
+				</div>
 		</div>
+		
+		
 		<div class="row" id = "invitedboard">
 			<h4>내가 초대되어있는 보드</h4>
 		</div>
