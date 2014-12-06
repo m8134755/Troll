@@ -59,7 +59,7 @@ $('button#findpw').click(function(event){
    setProgress('검색 중입니다..');
    
    $.post('findpw.jsp', {userid: inputid, username: inputname, useremail: inputemail}, function(data){
-      if(data.status == 1) setSuccess('비밀번호가 이메일로 전송되었습니다.');
+      if(data.status == 1) setSuccess('임시 비밀번호가 이메일로 전송되었습니다.');
       else setError('검색에 실패하였습니다.');
    });
 });
@@ -69,7 +69,7 @@ $('#join').click(function(){
 });
 
 if(localStorage.joinsuccess){
-   setSuccess("회원 가입 신청이 완료되었습니다.");
+   setSuccess("회원 가입이 완료되었습니다.");
    localStorage.removeItem("joinsuccess");
 }
 

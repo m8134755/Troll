@@ -80,7 +80,7 @@
                         <input type="text" class="form-control" id="input_pw_email"/>
                      </div>
                   </div>
-                  <button id="findpw" type="button" class="btn btn-default btn-block">비밀번호 찾기</button>
+                  <button id="findpw" type="button" class="btn btn-default btn-block">임시비밀번호 발급</button>
                </form>
             </div>
             <div class="modal-footer">
