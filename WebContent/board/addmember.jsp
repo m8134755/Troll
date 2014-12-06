@@ -51,7 +51,6 @@
 	}catch(Exception e){
 		e.printStackTrace();
 	}finally{
-		ConnUtil.close(rs, ps, conn);
 	}
 	try{
 		conn = ConnUtil.getConnection();
@@ -68,7 +67,6 @@
 	}catch(Exception e){
 		e.printStackTrace();
 	}finally{
-		ConnUtil.close(rs, ps, conn);
 	}
 	try{
 		conn = ConnUtil.getConnection();
@@ -85,8 +83,8 @@
 	}catch(Exception e){
 		e.printStackTrace();
 	}finally{
-		ConnUtil.close(rs, ps, conn);
 	}
+	
 	try{
 		conn = ConnUtil.getConnection();
 		String sql = "update board set guest=? where board_id=?";
@@ -110,8 +108,58 @@
 	}catch(Exception e){
 		e.printStackTrace();
 	}finally{
-		ConnUtil.close(rs, ps, conn);
 	}
+	
+	try{
+		conn = ConnUtil.getConnection();
+		
+		String noitce = currentusername + "(" + currentuser + ")"+ "님께서 " + "보드(" +  session.getAttribute("boardtitle") + ")" +
+		"에 초대하셨습니다.";
+		
+		String sql = "insert into notice (notice_master, notice_content) values (?, ?)";
+		ps = conn.prepareStatement(sql);
+			
+		ps.setString(1, memberid);
+		ps.setString(2, noitce);
+			
+		result = ps.executeUpdate();
+		
+		if(result == 1)
+		{
+			json.put("status",1);
+			history = currentusername + "님께서 " + membername +"("+ memberid +")"+ "님을 새 멤버로 추가하셨습니다.";
+			session.setAttribute("history", history);
+		}
+		else
+		{
+			json.put("status",2);
+		}
+		
+	}catch(Exception e){
+		e.printStackTrace();
+	}finally{
+	}
+	
+	try{
+		conn = ConnUtil.getConnection();
+		
+		String noitce = membername + "("+ memberid +")" + "님을 " + "보드(" +  session.getAttribute("boardtitle") + ")" +
+		"에 초대했습니다.";
+		
+		String sql = "insert into notice (notice_master, notice_content) values (?, ?)";
+		ps = conn.prepareStatement(sql);
+			
+		ps.setString(1, currentuser);
+		ps.setString(2, noitce);
+			
+		result = ps.executeUpdate();
+		
+		
+	}catch(Exception e){
+		e.printStackTrace();
+	}finally{
+	}
+	
 	out.write(json.toString());
 	try{
 		conn = ConnUtil.getConnection();

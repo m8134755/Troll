@@ -51,7 +51,7 @@
 		String sql = "select * from user where user_id=?;";
 		ps = conn.prepareStatement(sql);
 		ps.setString(1, newguest);
-		System.out.println(newguest);
+		
 		rs = ps.executeQuery();
 		
 		if(rs.next())

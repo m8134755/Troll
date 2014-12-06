@@ -11,9 +11,6 @@ $(function() {
 			$('#boardlist').append('<li><a class="enterboardmenu" href=#>' + data[i].boardtitle + '</a></li>');
 		}
 		
-		//$('#userboard').append('<div class="col-md-3"><button id="createnewboard" class="btn btn-lg btn-default btn-block"'+
-		//		'style="margin-top:20px" data-toggle="midal" data-target="#board_create_modal">Board 생성 </button></div>');
-		
 		$("#createnewboard").click(function(event){
 			$('#boardtitle').val("");
 		});
@@ -63,15 +60,22 @@ $(function() {
 	setProgress("정보를 받아오고 있습니다");
 	$.post('checkinvitedboard.jsp', function(data){
 		dismissProgress();
-		for(i=0; data[i]!=null; i++){
+		for(j=0; data[j]!=null; j++){
 			$('#invitedboard').append('<div class="col-md-3"><button type="button" class="close leaveboard"><span aria-hidden="true">&times;</span></button>'+
-					'<button class="btn btn-lg btn-primary btn-block enterinvitedboard">'+data[i].boardtitle+'</button>'+data[i].boardmaster+'</div>' +
-					'<form><input class = "invitedboardid" type="text" value="' + data[i].boardid + '" hidden>' + 
+					'<button class="btn btn-lg btn-primary btn-block enterinvitedboard">'+data[j].boardtitle+'</button>'+data[j].boardmaster+'</div>' +
+					'<form><input class = "invitedboardid" type="text" value="' + data[j].boardid + '" hidden>' + 
 					'</form></div>');
-			$('#boardlist').append('<li><a class="enterboardmenu" href=#>' + data[i].boardtitle + '</a></li>');
+			$('#boardlist').append('<li><a class="enterinvitedboardmenu" href=#>' + data[j].boardtitle + '</a></li>');
 		}
 		$('.enterinvitedboard').click(function (event) {
 			var test = $(this).index('.enterinvitedboard');
+			event.preventDefault();
+			$.post('enterinvitedboard.jsp', {boardid:test}, function(){
+		    	location.replace('/board/');
+		    });	    
+		});		
+		$('.enterinvitedboardmenu').click(function (event) {
+			var test = $(this).index('.enterinvitedboardmenu');
 			event.preventDefault();
 			$.post('enterinvitedboard.jsp', {boardid:test}, function(){
 		    	location.replace('/board/');
@@ -88,5 +92,13 @@ $(function() {
 				return false;
 			}
 		});
+	});
+	$.post('checknotice.jsp', function(data){
+		for(i=0; data[i]!=null && i!=5; i++){
+				$('#historylist').append('<li><div class="alert alert-info alert-dismissible" role="alert">'+
+						'<button class="close" data-dismiss="alert"></button>'
+						+'<small>'+data[i].noticecontent+'</small></div></li>');
+			
+		}
 	});
 });

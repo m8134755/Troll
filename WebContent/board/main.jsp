@@ -21,13 +21,6 @@
 			<div class="col-md-2">
 				<button class="btn btn-default" data-toggle="modal" data-target="#list_create_modal">리스트 생성</button>
 			</div>
-			
-			<!-- 
-				<div class="col-md-12" id="userlist">
-			</div>
-			<div class="col-md-12" id="makinglist">
-			</div>
-			 -->
 
 		</div>
 	</div>

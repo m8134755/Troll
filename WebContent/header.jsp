@@ -36,14 +36,13 @@
                 		<% out.write(session.getAttribute("name").toString()); %>
                 		<b class="caret"></b></a>
                 		<ul class="dropdown-menu">
-                			<li><a href="/userinfo">내 정보</a>
-                			<li><a href="javascript:location.replace('/logout.jsp');">로그아웃</a>
+                			<li><a href="/userinfo">내 정보</a></li>
+                			<li><a href="javascript:location.replace('/logout.jsp');">로그아웃</a></li>
                 		</ul>
                 	</li>
                     <li class="dropdown" id="nav-appinfo">
-                    	<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="info">정보 <b class="caret"></b></a>
-                    	<ul class="dropdown-menu">
-                    		<li><a href=#>내역</a>
+                    	<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="info">내역<b class="caret"></b></a>
+                    	<ul class="dropdown-menu" id="historylist">
                     	</ul>
                     </li>
                 </ul> 

@@ -21,6 +21,23 @@
 	
 	try{
 		conn = ConnUtil.getConnection();
+		String sql = "select board_title from board where board_id=?";
+		ps = conn.prepareStatement(sql);
+		ps.setString(1, request.getParameter("boardid"));
+		
+		rs = ps.executeQuery();
+		
+		if(rs.next()){
+			session.setAttribute("deleteboardname", rs.getString(1));
+		}
+		
+	}catch(Exception e){
+		e.printStackTrace();
+	}finally{
+	}
+	
+	try{
+		conn = ConnUtil.getConnection();
 		
 		String sql = "delete from board where board_id= ?";
 		
@@ -37,7 +54,23 @@
 	}catch(Exception e){
 		e.printStackTrace();
 	}finally{
-		ConnUtil.close(rs, ps, conn);
+	}
+	try{
+		conn = ConnUtil.getConnection();
+		
+		String noitce = "보드(" + session.getAttribute("deleteboardname") + ")를 삭제하셨습니다.";
+		
+		String sql = "insert into notice (notice_master, notice_content) values (?, ?)";
+		ps = conn.prepareStatement(sql);
+			
+		ps.setString(1, userid);
+		ps.setString(2, noitce);
+			
+		result = ps.executeUpdate();
+		
+	}catch(Exception e){
+		e.printStackTrace();
+	}finally{
 	}
 	out.write(json.toString());
 %>

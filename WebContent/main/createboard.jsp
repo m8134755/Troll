@@ -9,6 +9,7 @@
 	response.setCharacterEncoding("UTF-8");
 	response.setContentType("application/json");
 	String userid = session.getAttribute("userid").toString();
+	
 	int result = 0;
 	
 	
@@ -37,7 +38,23 @@
 	}catch(Exception e){
 		e.printStackTrace();
 	}finally{
-		ConnUtil.close(rs, ps, conn);
+	}
+	try{
+		conn = ConnUtil.getConnection();
+		
+		String noitce = "보드(" + request.getParameter("boardtitle") + ")를 생성하셨습니다.";
+		
+		String sql = "insert into notice (notice_master, notice_content) values (?, ?)";
+		ps = conn.prepareStatement(sql);
+			
+		ps.setString(1, userid);
+		ps.setString(2, noitce);
+			
+		result = ps.executeUpdate();
+		
+	}catch(Exception e){
+		e.printStackTrace();
+	}finally{
 	}
 	
 	out.write(json.toString());

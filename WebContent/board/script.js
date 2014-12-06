@@ -10,8 +10,6 @@ var arrivalarea;
 $(function(){
 	showlist();
 	showcard();
-	//listmaking();
-	//listmakingcheck();
 	createlist();
 	boardnavi();
 	currentmember();
@@ -27,15 +25,16 @@ function showlist(){
 					'<h3 class="panel-title">'+data[i].listtitle+'<input class = "listid" type="text" value="' + data[i].listid + '" hidden>'+	
 					'<button class="btn btn-xs btn-default pull-right editlist" data-toggle="modal" '+
 					' data-target=".editlistdiv' + data[i].listid + '">수정</button></div></h3>'+
-					'<ul class="list-group" style="padding-left: 0px;"><li class="list-group-item cardarea"></li></ul>' +
+					'<ul class="list-group" style="padding-left: 0px;"><li class="list-group-item cardarea"></li>' + 
+					'<li class="list-group-item createcardarea"></li></ul>' +
 
 					
 					'<div class="modal fade editlistdiv' + data[i].listid + '"><div class="modal-dialog"><div class="modal-content">'+
-					'<div class="modal-header"><h4 class="modal-title">List 수정 및 삭제</h4></div><div class="modal-body">' +
+					'<div class="modal-header"><h4 class="modal-title">리스트 수정 및 삭제</h4></div><div class="modal-body">' +
 					'<div class="form-group"><label class="control-label">List Title</label>'+
 					'<input class="form-control editlisttitle" type="text" value="' + data[i].listtitle + '">' +
-					'</div></div><div class="modal-footer"><button class="btn btn-primary editlistbtn" type="button">수정</button>'+
-					'<button class="btn btn-primary deletelist" type="button">삭제</button>' +
+					'</div></div><div class="modal-footer"><button class="btn btn-primary editlistbtn" type="button">리스트수정</button>'+
+					'<button class="btn btn-danger deletelist" type="button">리스트삭제</button>' +
 					'<button type="button" class="btn btn-default" data-dismiss="modal">취소</button></div></div></div></div>');
 			
 			listnum++;
@@ -104,26 +103,26 @@ function showcard(){
 				if(data[j].cardmaster==$('.listid').eq(k).val()){
 					$('.cardarea').eq(k).append('<li class="list-group-item card_obj"><input class="cardid" type="text" value="' +
 					data[j].cardid + '" hidden><button class="btn btn-md btn-default editlist" data-toggle="modal" '+
-					' data-target=".editcarddiv' + data[j].cardid + '">' + data[j].cardcontent +'</button></li>' +
+					' data-target=".editcarddiv' + data[j].cardid + '">' + data[j].cardcontent +'</button>' +
 					
 					'<div class="modal fade editcarddiv' + data[j].cardid + '"><div class="modal-dialog"><div class="modal-content">'+
 					'<div class="modal-header"><h4 class="modal-title">카드 수정 및 삭제</h4></div><div class="modal-body">' +
 					'<div class="form-group"><label class="control-label">Card Content</label>'+
 					'<input class="form-control editcardcontent" type="text" value="' + data[j].cardcontent + '">' +
-					'</div></div><div class="modal-footer"><button class="btn btn-primary editcardbtn" type="button">수정</button>'+
-					'<button class="btn btn-primary deletecard" type="button">삭제</button>' +
-					'<button type="button" class="btn btn-default" data-dismiss="modal">취소</button></div></div></div></div>');
+					'</div></div><div class="modal-footer"><button class="btn btn-primary editcardbtn" type="button">카드수정</button>'+
+					'<button class="btn btn-danger deletecard" type="button">카드삭제</button>' +
+					'<button type="button" class="btn btn-default" data-dismiss="modal">취소</button></div></div></div></div></li>');
 					
 				}
 			}
-			$('.cardarea').eq(k).append('<li class="list-group-item"><button class="btn btn-md btn-default createnewcard" data-toggle="modal" '+
+			$('.createcardarea').eq(k).append('<li class="list-group-item"><button class="btn btn-md btn-default createnewcard" data-toggle="modal" '+
 				' data-target=".createcarddiv' + $('.listid').eq(k).val() + '">새 카드 생성하기</button>' +
 			
 			'<div class="modal fade createcarddiv' + $('.listid').eq(k).val() + '"><div class="modal-dialog"><div class="modal-content">'+
 			'<div class="modal-header"><h4 class="modal-title">카드 생성</h4></div><div class="modal-body">' +
 			'<div class="form-group"><label class="control-label">Card Content</label>'+
 			'<input class="form-control cardcontent" type="text" placeholder="카드 내용을 입력하세요.">' +
-			'</div></div><div class="modal-footer"><button class="btn btn-primary createcard" type="button">생성</button>'+
+			'</div></div><div class="modal-footer"><button class="btn btn-primary createcard" type="button">카드생성</button>'+
 			'<button type="button" class="btn btn-default" data-dismiss="modal">취소</button></div></div></div></li>');
 		}
 		
@@ -218,13 +217,33 @@ function boardnavi(){
 		    });	    
 		});
 	});
-	$.post('checkhistory.jsp', function(data){
+	$.post('/main/checkinvitedboard.jsp', function(data){
 		for(i=0; data[i]!=null; i++){
-			$('#history').append('<div class="alert alert-info alert-dismissible" role="alert"><button class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>'
-					+'<small>'+data[i].historycontent+'</small></div>');
+			$('#boardlist').append('<li><a class="enterinvitedboardmenu" href=#>' + data[i].boardtitle + '</a></li>');
 		}
+		$('.enterinvitedboardmenu').click(function (event) {
+			var test = $(this).index('.enterinvitedboardmenu');
+			event.preventDefault();
+			$.post('/main/enterinvitedboard.jsp', {boardid:test}, function(){
+		    	location.replace('/board/');
+		    });	    
+		});
 	});
 	
+	$.post('checkhistory.jsp', function(data){
+		for(i=0; data[i]!=null; i++){
+			$('#history').append('<div class="alert alert-info alert-dismissible" role="alert">'+
+				'<button class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>'
+				+'<small>'+data[i].historycontent+'</small></div>');
+		}
+		for(i=0; data[i]!=null && i!=5; i++){
+
+				$('#historylist').append('<li><div class="alert alert-info alert-dismissible" role="alert">'+
+						'<button class="close" data-dismiss="alert"></button>'
+						+'<small>'+data[i].historycontent+'</small></div></li>');
+			
+		}
+	});
 }
 
 function createlist(){
