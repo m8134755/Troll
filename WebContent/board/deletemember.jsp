@@ -60,9 +60,10 @@
 	}finally{
 		ConnUtil.close(rs, ps, conn);
 	}
-	if(guest.length != 2)
+	
+	if(guest != null && guest.length != 2)
 	{
-		if(guest != null && guest.length > 1)
+		if(guest.length > 1)
 		{
 			for(int i=0 ;i < guest.length ; i++)
 			{
@@ -97,7 +98,7 @@
 			guestlist = null;
 		}
 	}
-	else
+	else if(guest != null && guest.length == 2)
 	{
 		if(guest[0].equals(memberid))
 		{
@@ -107,6 +108,10 @@
 		{
 			guestlist = guest[0];
 		}
+	}
+	else
+	{
+		guestlist = null;
 	}
 	try{
 		conn = ConnUtil.getConnection();
