@@ -62,7 +62,7 @@ $(function() {
 		dismissProgress();
 		for(j=0; data[j]!=null; j++){
 			$('#invitedboard').append('<div class="col-md-3"><button type="button" class="close leaveboard"><span aria-hidden="true">&times;</span></button>'+
-					'<button class="btn btn-lg btn-primary btn-block enterinvitedboard">'+data[j].boardtitle+'</button>'+data[j].boardmaster+'</div>' +
+					'<button class="btn btn-lg btn-primary btn-block enterinvitedboard" style="line-height:5">'+data[j].boardtitle+'</button>'+data[j].boardmaster+'</div>' +
 					'<form><input class = "invitedboardid" type="text" value="' + data[j].boardid + '" hidden>' + 
 					'</form></div>');
 			$('#boardlist').append('<li><a class="enterinvitedboardmenu" href=#>' + data[j].boardtitle + '</a></li>');

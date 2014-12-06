@@ -159,12 +159,6 @@ function showcard(){
 				    		beforelist:$('.listid').eq(startarea).val(), afterlist:$('.listid').eq(arrivalarea).val()}, function(){
 					    });
 			    	}
-			    	//if(check == 0 && startarea!=arrivalarea){
-			    	//	$.post('changecard.jsp', {first:0, last:0,
-				    //		after:0, check:0, startarea:startarea, arrivalarea:arrivalarea,
-				    //		beforelist:$('.listid').eq(startarea).val(), afterlist:$('.listid').eq(arrivalarea).val()}, function(){
-					 //   });
-			    	//}
 	            }
 		    });
 		    $( ".cardarea" ).disableSelection();
