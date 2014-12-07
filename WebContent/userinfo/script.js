@@ -30,6 +30,24 @@ $('#password').keyup(function(){
 	}
 });
 
+var erroremail = $('#erroremail');
+var emailok = true;
+$('#email').keyup(function(){
+	
+	var emailconfirm = $(this).val();
+	
+	var re = /^[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[@]{1}[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[.]{1}[A-Za-z]{2,5}$/;
+	
+	if(re.test(emailconfirm) || emailconfirm.length == 0){
+		$(erroremail).addClass('hidden').html('');
+		emailok = true;
+	}
+	else{
+		$(erroremail).removeClass('hidden').html('이메일 표현이 잘못되었습니다.');
+		emailok = false;
+	}
+});
+
 $('button#modify').click(function(){
 	var ispasswordchanged = $(newpasswordgroup).attr('disabled') == undefined? true : false;
 	
@@ -59,9 +77,13 @@ $('button#modify').click(function(){
 		newpassword = sha256_digest(newpassword);
 		
 		requestdata.password = password;
-		requestdata.newpassword = newpassword;
+		 requestdata.newpassword = newpassword;
 	}
-	
+	if(emailok == false)
+	{
+		setError("올바른 이메일 입력이 아닙니다.");
+		return;
+	}
 	setProgress('서버로 정보를 전송하고 있습니다..');
 	
 	$.post('modifyuserinfo.jsp', requestdata, function(data){
