@@ -1,7 +1,7 @@
 var listnum=0;
-var first = [];
+var before = [];
 var after = [];
-var firstcard = [];
+var beforecard = [];
 var aftercard = [];
 var startarea;
 var arrivalarea;
@@ -43,7 +43,8 @@ function showlist(){
 			$( "#userlist" ).sortable({
 				start: function (event, ui) {
 					for(i=0; i<$('.usercard').length; i++){
-				    	first[i] = $('.listid').eq(i).val();
+						before[i] = $('.listid').eq(i).val();
+						after[i] = $('.listid').eq(i).val();
 			    	}
 			    },
 			    receive : function (event, ui)
@@ -56,15 +57,28 @@ function showlist(){
 			    		after[i] = $('.listid').eq(i).val();
 			    	}
 			    	for(i=0; i<$('.usercard').length; i++){
-				    	if(first[i] != after[i]){
+				    	if(before[i] != after[i]){
 				    		start=i+1;
 				    		check++;
 				    	}
 			    	}
-			    	if(check != 0){
-				    	$.post('changelist.jsp', {first:first[start-check], last:first[start-2], after:after[start-2], check:check}, function(){
-							location.replace('/board');
-					    });
+			    	
+			    	
+			    	if(before[start-check] == after[start-check+1] && before[start-check+1] == after[start-check]){
+			    		$.post('changelist.jsp', {beforearrayfirst:before[start-check], beforearraysecond:before[start-check+1],
+			    		afterarrayfirst:after[start-check], afterarraysecond:after[start-check+1], check:check, endarray:before[start-1]}, function(){
+			    			location.replace('/board');
+		    			});
+			    	}else if(after[start-check+1] == before[start-check]){
+			    		$.post('changelist.jsp', {beforearrayfirst:before[start-check], beforearraysecond:before[start-check+1],
+				    		afterarrayfirst:after[start-check], afterarraysecond:after[start-check+1], check:check, endarray:before[start-1]}, function(){
+				    		location.replace('/board');
+		    			});
+			    	}else if(before[start-check+1] == after[start-check]){
+			    		$.post('changelist.jsp', {beforearrayfirst:before[start-check], beforearraysecond:before[start-check+1],
+				    		afterarrayfirst:after[start-check], afterarraysecond:after[start-check+1], check:check, endarray:before[start-1]}, function(){
+				    		location.replace('/board');
+		    			});
 			    	}
 			    }
 			});
@@ -133,39 +147,54 @@ function showcard(){
 		    $( ".cardarea" ).sortable({
 		    	connectWith:".cardarea",
 	    		start: function (event, ui){
-	    			startarea = $('.cardarea').index(this);
-	    			arrivalarea = $('.cardarea').index(this);
-	    			for(i=0; i<$('.cardobj').length; i++){
-				    	firstcard[i] = $('.cardid').eq(i).val();
+	    			var test = $('.cardarea').index(this);
+	    			startarea = $('.listid').eq(test).val();
+	    			arrivalarea = $('.listid').eq(test).val();
+	    			for(i=0; i<$('.cardid').length; i++){
+	    				beforecard[i] = $('.cardid').eq(i).val();
+	    				aftercard[i] = $('.cardid').eq(i).val();
 			    	}
 	            },
 	            receive : function (event, ui)
 	            {
-	            	arrivalarea = $('.cardarea').index(this);
+	            	var test = $('.cardarea').index(this);
+	            	arrivalarea = $('.listid').eq(test).val();
 	            },
 	            stop: function (event, ui) {
 	            	var check=0;
 			    	var start=0;
-			    	for(i=0; i<$('.cardobj').length; i++){
+			    	for(i=0; i<$('.cardid').length; i++){
 			    		aftercard[i] = $('.cardid').eq(i).val();
 			    	}
-			    	for(i=0; i<$('.cardobj').length; i++){
-				    	if(firstcard[i] != aftercard[i]){
-			            	console.log(firstcard[i], aftercard[i]);
+			    	for(i=0; i<$('.cardid').length; i++){
+				    	if(beforecard[i] != aftercard[i]){
 				    		start=i+1;
 				    		check++;
 				    	}
 			    	}
-			    	if(check != 0){
-				    	$.post('changecard.jsp', {first:firstcard[start-check],
-				    		after:aftercard[start-check+1], check:check, startarea:startarea, arrivalarea:arrivalarea,
-				    		beforelist:$('.listid').eq(startarea).val(), afterlist:$('.listid').eq(arrivalarea).val()}, function(){
-					    });
+			    	
+			    	if(check==0 && startarea != arrivalarea){
+			    		$.post('changecard.jsp', {status:0, beforearrayfirst:beforecard[start-check], beforearraysecond:beforecard[start-check+1],
+			    			afterarrayfirst:aftercard[start-check], afterarraysecond:aftercard[start-check+1], check:check, 
+			    			startarea:startarea, arrivalarea:arrivalarea}, function(){
+			    				location.replace('/board');
+		    			});
+			    	}else if(check!=0 && startarea == arrivalarea){
+			    		$.post('changecard.jsp', {status:1, beforearrayfirst:beforecard[start-check], beforearraysecond:beforecard[start-check+1],
+			    			afterarrayfirst:aftercard[start-check], afterarraysecond:aftercard[start-check+1], check:check, 
+			    			startarea:startarea, arrivalarea:arrivalarea}, function(){
+			    				location.replace('/board');
+		    			});
+			    	}else if(check!=0 && startarea != arrivalarea){
+			    		$.post('changecard.jsp', {status:2, beforearrayfirst:beforecard[start-check], beforearraysecond:beforecard[start-check+1],
+			    			afterarrayfirst:aftercard[start-check], afterarraysecond:aftercard[start-check+1], check:check, 
+			    			startarea:startarea, arrivalarea:arrivalarea}, function(){
+			    				location.replace('/board');
+		    			});
 			    	}
 	            }
 		    });
 		    $( ".cardarea" ).disableSelection();
-		    
 		});
 		
 		
@@ -301,7 +330,6 @@ $('#findmember').click(function (event) {
 		}
 		else if (data1.status == 4)
 		{
-			console.log("1");
 			setError("이미 초대되어있는 아이디입니다.");
 		}
 		else if(data1.status == 0)
